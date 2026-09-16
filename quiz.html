@@ -1,0 +1,1219 @@
+<title>Bulgarian Quiz Night</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Spectral:ital,wght@0,500;0,600;0,700;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ink:#150F12;
+  --ink-2:#1E1519;
+  --ink-3:#2A1D22;
+  --line:#3B2A30;
+  --linen:#F3E9DA;
+  --linen-dim:#C3B2A3;
+  --muted:#907F76;
+  --madder:#CE3B33;
+  --madder-lit:#E04A40;
+  --thracian:#D4A03C;
+  --pine:#2E8F6E;
+  --rose:#E58B93;
+  --on-block:#190E0C;
+  --f-display:'Oswald','Arial Narrow',Impact,sans-serif;
+  --f-serif:'Spectral',Georgia,'Times New Roman',serif;
+  --f-sans:'IBM Plex Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--linen);font-family:var(--f-sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+#app{min-height:100vh;display:flex;flex-direction:column}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--thracian);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.001ms !important;animation-duration:.001ms !important}}
+
+.pane{width:100%;max-width:1080px;margin:0 auto;padding:clamp(20px,3vw,40px) clamp(16px,3vw,32px) 56px;display:flex;flex-direction:column;gap:clamp(20px,2.6vw,34px);flex:1}
+.pane--wide{max-width:1460px}
+.pane--play{gap:clamp(14px,2vw,26px);justify-content:center;justify-content:safe center;min-height:100vh;padding-top:clamp(14px,2vw,26px);padding-bottom:clamp(14px,2vw,26px)}
+
+.eyebrow{font:600 12px/1 var(--f-display);letter-spacing:.26em;text-transform:uppercase;color:var(--thracian);margin:0}
+.eyebrow--quiet{color:var(--muted)}
+h1{font:700 clamp(36px,6vw,68px)/1.02 var(--f-serif);margin:0;letter-spacing:-.015em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--madder)}
+h2{font:600 clamp(20px,2.4vw,28px)/1.15 var(--f-serif);margin:0;text-wrap:balance}
+h3{font:600 15px/1.2 var(--f-sans);margin:0;letter-spacing:.01em}
+p{margin:0}
+.lede{font:500 clamp(16px,1.5vw,19px)/1.6 var(--f-serif);color:var(--linen-dim);max-width:60ch}
+.small{font-size:13px;color:var(--muted)}
+.num{font-family:var(--f-display);font-variant-numeric:tabular-nums}
+
+.shev{display:block;width:100%;height:30px}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+a{color:var(--thracian)}
+.grouplabel{margin:6px 0 -2px}
+
+.head{display:flex;flex-direction:column;gap:14px}
+.head__top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.stats{display:flex;gap:26px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat b{font:600 26px/1 var(--f-display);color:var(--linen);font-variant-numeric:tabular-nums}
+.stat span{font:500 11px/1 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px}
+.mode{position:relative;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-top:3px solid var(--muted);padding:20px 20px 22px;color:var(--linen);cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:background .16s ease,border-color .16s ease,transform .12s ease}
+.mode:hover:not(:disabled){background:var(--ink-3);transform:translateY(-2px)}
+.mode:disabled{cursor:not-allowed;opacity:.45}
+.mode[data-tone="madder"]{border-top-color:var(--madder)}
+.mode[data-tone="gold"]{border-top-color:var(--thracian)}
+.mode[data-tone="pine"]{border-top-color:var(--pine)}
+.mode[data-tone="rose"]{border-top-color:var(--rose)}
+.mode b{font:600 19px/1.2 var(--f-serif)}
+.mode p{font-size:13.5px;color:var(--linen-dim);line-height:1.5}
+.mode .tag{display:flex;align-items:center;gap:7px;min-height:16px;font:500 10.5px/1.3 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.card{background:var(--ink-2);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+.btn{font:600 15px/1 var(--f-sans);letter-spacing:.015em;padding:14px 20px;border-radius:2px;border:1px solid var(--line);background:var(--ink-2);color:var(--linen);cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .1s ease}
+.btn:hover{background:var(--ink-3);border-color:var(--muted)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn--primary{background:var(--madder);border-color:var(--madder);color:#FFF4EE}
+.btn--primary:hover{background:var(--madder-lit);border-color:var(--madder-lit)}
+.btn--gold{background:var(--thracian);border-color:var(--thracian);color:#1A1207}
+.btn--gold:hover{background:#E2AE47;border-color:#E2AE47}
+.btn--big{padding:18px 28px;font-size:17px}
+.btn--ghost{background:transparent}
+.btn--sm{padding:9px 13px;font-size:13px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btnrow--end{justify-content:flex-end}
+
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font:500 11px/1 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+input[type=text]{font:500 17px/1 var(--f-sans);background:var(--ink);border:1px solid var(--line);color:var(--linen);padding:14px 15px;border-radius:2px;width:100%}
+input[type=text]::placeholder{color:#6C5C55}
+input.pin{font:600 34px/1 var(--f-display);letter-spacing:.34em;text-align:center;padding:16px 10px}
+
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.seg button{font:600 13px/1 var(--f-sans);padding:11px 16px;background:var(--ink);color:var(--linen-dim);border:0;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.is-on{background:var(--thracian);color:#1A1207}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;font:500 13.5px/1 var(--f-sans);padding:10px 13px;border:1px solid var(--line);background:var(--ink);color:var(--linen-dim);border-radius:2px;cursor:pointer;transition:background .14s ease,color .14s ease,border-color .14s ease}
+.chip .n{font-family:var(--f-display);font-size:12px;color:var(--muted)}
+.chip.is-on{background:var(--ink-3);border-color:var(--thracian);color:var(--linen)}
+.chip.is-on .n{color:var(--thracian)}
+.chip--flat{cursor:default}
+.chip--flat b{font-weight:600;color:var(--linen)}
+.chip .x{color:var(--muted);font-size:15px}
+
+.board{display:flex;flex-direction:column;gap:clamp(14px,2vw,24px);flex:1}
+.board__top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.place{display:flex;align-items:baseline;gap:12px}
+.place b{font:600 clamp(18px,2vw,26px)/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--linen)}
+.place span{font:500 13px/1 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--madder)}
+.counter{font:500 14px/1 var(--f-display);letter-spacing:.16em;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.timer{display:flex;align-items:center;gap:14px}
+.timer__num{font:600 clamp(28px,3vw,42px)/1 var(--f-display);font-variant-numeric:tabular-nums;color:var(--thracian);min-width:2.2ch;text-align:right}
+.timer__bar{flex:1;height:8px;background:var(--ink-3);position:relative;overflow:hidden}
+.timer__fill{position:absolute;inset:0;transform-origin:left center;background:linear-gradient(90deg,var(--pine),var(--thracian) 55%,var(--madder));transition:transform .12s linear}
+
+.qtext{font:600 clamp(24px,3.6vw,50px)/1.16 var(--f-serif);text-wrap:balance;margin:0;max-width:27ch}
+.qtext--sm{font-size:clamp(19px,2.6vw,26px);max-width:34ch}
+.opts{display:grid;gap:12px}
+.opts--row{grid-template-columns:repeat(3,1fr)}
+.opts--row.n2{grid-template-columns:repeat(2,1fr)}
+.opts--row.n4{grid-template-columns:repeat(2,1fr)}
+@media (max-width:900px){.opts--row{grid-template-columns:1fr}}
+.opt{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;padding:clamp(15px,2vw,24px);border:0;border-radius:2px;color:var(--on-block);font:600 clamp(15.5px,1.7vw,23px)/1.28 var(--f-sans);cursor:pointer;transition:opacity .2s ease,filter .2s ease,transform .1s ease,box-shadow .2s ease}
+.opt:active{transform:translateY(1px)}
+.opt[data-k="0"]{background:var(--madder)}
+.opt[data-k="1"]{background:var(--thracian)}
+.opt[data-k="2"]{background:var(--pine)}
+.opt[data-k="3"]{background:var(--rose)}
+.opt .glyph{font-family:var(--f-display);font-weight:600;font-size:1em;line-height:1.25;opacity:.62;flex:none;white-space:nowrap;letter-spacing:.06em}
+.opt.is-static{cursor:default}
+.opt.is-dim{opacity:.22;filter:grayscale(.5)}
+.opt.is-right{box-shadow:0 0 0 3px var(--ink),0 0 0 6px var(--linen)}
+.opt.is-picked{box-shadow:0 0 0 3px var(--ink),0 0 0 6px var(--thracian)}
+.opt .cnt{margin-left:auto;font-family:var(--f-display);font-weight:600;font-size:.95em;opacity:.62;flex:none;font-variant-numeric:tabular-nums}
+.opts--player .opt{min-height:clamp(62px,11vh,110px);align-items:center;font-size:clamp(17px,4.4vw,24px)}
+
+.why{background:var(--ink-2);border-left:3px solid var(--thracian);padding:clamp(14px,1.8vw,20px);font:500 clamp(15px,1.6vw,20px)/1.6 var(--f-serif);color:var(--linen-dim)}
+.why b{color:var(--linen);font-weight:600}
+
+.lb{display:flex;flex-direction:column;gap:7px}
+.lb__row{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:center;padding:10px 13px;background:var(--ink-2);border-left:3px solid var(--line)}
+.lb__row.is-top{border-left-color:var(--thracian)}
+.lb__row.is-me{background:var(--ink-3);border-left-color:var(--madder)}
+.lb__rank{font:600 15px/1 var(--f-display);color:var(--muted);font-variant-numeric:tabular-nums}
+.lb__name{font:500 15px/1.2 var(--f-sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb__pts{font:600 19px/1 var(--f-display);font-variant-numeric:tabular-nums;color:var(--thracian)}
+.lb__delta{font:500 12px/1 var(--f-sans);color:var(--pine)}
+
+.podium{display:grid;grid-template-columns:1fr 1.16fr 1fr;gap:12px;align-items:end}
+.pod{display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:18px 14px;background:var(--ink-2);border-top:3px solid var(--line);text-align:center}
+.pod--1{border-top-color:var(--thracian);min-height:210px}
+.pod--2{border-top-color:var(--linen-dim);min-height:168px}
+.pod--3{border-top-color:var(--madder);min-height:140px}
+.pod b{font:600 clamp(17px,2vw,23px)/1.2 var(--f-serif);word-break:break-word}
+.pod .pts{font:600 clamp(22px,2.6vw,32px)/1 var(--f-display);color:var(--thracian);font-variant-numeric:tabular-nums}
+.pod .rank{font:600 12px/1 var(--f-display);letter-spacing:.2em;color:var(--muted)}
+@media (max-width:620px){.podium{grid-template-columns:1fr}.pod{min-height:0 !important}}
+
+.pinbox{display:flex;flex-direction:column;align-items:center;gap:6px;padding:clamp(18px,3vw,32px);background:var(--ink-2);border:1px solid var(--line)}
+.pinbox .code{font:700 clamp(52px,11vw,120px)/1 var(--f-display);letter-spacing:.14em;color:var(--linen);font-variant-numeric:tabular-nums}
+.pinbox .addr{font:700 clamp(22px,4.4vw,54px)/1.1 var(--f-display);letter-spacing:.01em;color:var(--linen);word-break:break-all;text-align:center}
+.pinbox .hint{font:500 12px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--thracian)}
+
+.awards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
+.award{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 14px;border:1px solid var(--line);background:var(--ink);color:var(--linen-dim);font:500 15px/1.2 var(--f-sans);cursor:pointer;border-radius:2px;text-align:left;transition:background .14s ease,color .14s ease}
+.award .s{font:600 13px/1 var(--f-display);color:var(--muted);font-variant-numeric:tabular-nums}
+.award.is-on{background:var(--pine);border-color:var(--pine);color:var(--on-block)}
+.award.is-on .s{color:var(--on-block)}
+
+.notice{padding:12px 14px;border-left:3px solid var(--madder);background:var(--ink-2);font-size:13.5px;color:var(--linen-dim)}
+.notice--ok{border-left-color:var(--pine)}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;background:var(--ink-2);border:1px solid var(--line);font:500 12.5px/1 var(--f-sans);color:var(--linen-dim);border-radius:2px}
+.pill b{color:var(--linen);font-weight:600}
+.dot{width:7px;height:7px;background:var(--pine);border-radius:50%;flex:none}
+.dot--wait{background:var(--thracian)}
+.dot--off{background:var(--muted)}
+
+.verdict{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;padding:clamp(20px,4vw,44px) 18px;border:1px solid var(--line)}
+.verdict.is-right{background:rgba(46,143,110,.14);border-color:var(--pine)}
+.verdict.is-wrong{background:rgba(206,59,51,.12);border-color:var(--madder)}
+.verdict h2{font-size:clamp(26px,5vw,44px)}
+.verdict .gain{font:600 clamp(30px,6vw,54px)/1 var(--f-display);color:var(--thracian);font-variant-numeric:tabular-nums}
+
+.roster{display:flex;flex-direction:column;gap:10px}
+.playerbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:var(--ink-2);border:1px solid var(--line)}
+.playerbar b{font:600 15px/1 var(--f-sans)}
+.playerbar .sc{font:600 20px/1 var(--f-display);color:var(--thracian);font-variant-numeric:tabular-nums}
+.spread{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:10px}
+.stack--tight{gap:6px}
+.col2{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(14px,2vw,26px);align-items:start}
+@media (max-width:900px){.col2{grid-template-columns:1fr}}
+.footnote{font-size:12.5px;color:var(--muted);max-width:70ch}
+.roundlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:2px}
+.roundlist div{display:grid;grid-template-columns:1fr auto;gap:1px 10px;padding:9px 12px;background:var(--ink-2)}
+.roundlist .cy{grid-column:1/-1;font:italic 500 11.5px/1.35 var(--f-serif);color:var(--muted)}
+.roundlist b{font:500 14px/1.25 var(--f-sans);color:var(--linen)}
+.roundlist .n{font:600 12.5px/1.6 var(--f-display);color:var(--thracian);font-variant-numeric:tabular-nums}
+.cyr{font-family:var(--f-serif);font-style:italic;color:var(--muted)}
+</style>
+<div id="app"></div>
+<script>
+(function(){
+'use strict';
+
+/* ------------------------------------------------------------------
+   THE QUESTION BANK
+   c = index of the correct option. why = what the host reads out.
+------------------------------------------------------------------ */
+var ROUNDS = [
+{id:'history',city:'History & Origins',cyr:'История и произход',main:true,qs:[
+  {t:"Which year did Khan Asparuh found the First Bulgarian Empire?",
+   a:["681","1018","1878","1396"],c:0,
+   why:"In <b>681</b> Byzantium signed a treaty with Asparuh's Bulgars and recognised the new state south of the Danube — the first time Bulgaria appears on the map of Europe. The other three dates are all endings: 1018, the fall of the First Empire to Byzantium; 1396, the Ottoman conquest; 1878, the Liberation."},
+  {t:"True or False: Cyrillic was created in Bulgaria by Cyril & Methodius' students.",
+   a:["True","False"],c:0,
+   why:"<b>True.</b> Cyril and Methodius created the Glagolitic alphabet. Their disciples — Clement, Naum and the others — were taken in by Tsar Boris I, and it was at the Preslav Literary School, at the end of the 9th century, that Cyrillic was built. It carries Cyril's name, but it is Bulgarian work."},
+  {t:"The Madara Rider rock relief was carved during which ruler's reign?",
+   a:["Khan Asparuh","Khan Tervel","Tsar Simeon the Great","Tsar Samuil"],c:1,
+   why:"Carved into a sheer cliff 23 metres above the ground during the reign of <b>Khan Tervel</b>, in the early 8th century. It is the only rock relief of its kind in Europe and has been on the UNESCO World Heritage list since 1979."},
+  {t:"Rila Monastery grew from the hermitage of which 10th-century monk?",
+   a:["Ivan Rilski","Patriarch Evtimiy","Boris I","Cyril and Methodius"],c:0,
+   why:"<b>St. Ivan Rilski</b> — John of Rila — lived as a hermit in a cave in the Rila mountains, and his followers built the monastery beside his refuge. He is the patron saint of Bulgaria, and the monastery has been UNESCO-listed since 1983."},
+  {t:"True or False: Vasil Levski led Bulgaria's army in the 1877 war.",
+   a:["True","False"],c:1,
+   why:"<b>False.</b> Levski was captured and hanged in Sofia in <b>1873</b>, four years before the war began. His work was the secret network inside the country — the Internal Revolutionary Organisation — which is why he is remembered as the Apostle of Freedom rather than as a general."}
+]},
+{id:'traditions',city:'Traditions & Folklore',cyr:'Традиции и фолклор',main:true,qs:[
+  {t:"What is a “martenitsa”, traditionally worn on 1 March?",
+   a:["A red-and-white thread ornament","A Kukeri mask","A type of Easter bread","A wedding dance"],c:0,
+   why:"Given for <b>Baba Marta</b> and worn until you see a stork, a swallow or a blossoming tree — then tied to a fruit tree. White is for purity and long life, red for health and the blood in your veins."},
+  {t:"True or False: Nestinarstvo fire-dancing is on UNESCO's heritage list.",
+   a:["True","False"],c:0,
+   why:"<b>True</b> — inscribed in 2009. Barefoot dancing on live embers, carrying the icons of Saints Constantine and Helena to the beat of a sacred drum, still performed every 3 June in the Strandzha village of Bulgari."},
+  {t:"What is the purpose of the winter “Kukeri” costume rituals?",
+   a:["Celebrate the grape harvest","Scare away evil spirits","Mark independence day","Start of the school year"],c:1,
+   why:"Furs, carved masks and heavy copper bells, worn to <b>drive out evil spirits</b> and secure health and a good harvest for the year ahead. The biggest gathering is Surva in Pernik, one of the largest masquerade festivals in Europe."},
+  {t:"What are the paper fortunes baked into New Year's banitsa called?",
+   a:["Kusmeti","Sirene","Rakia","Horo"],c:0,
+   why:"<b>Късмети</b> — little written fortunes rolled into the banitsa on New Year's Eve, one per person: health, love, luck, travel. Older versions used dogwood twigs, counting the buds. The other three answers are a cheese, a brandy and a dance."},
+  {t:"True or False: Horo is a traditional Bulgarian circle dance.",
+   a:["True","False"],c:0,
+   why:"<b>True.</b> Danced in a chain or a closed circle, hands joined or belts gripped, in time signatures that visitors give up on — 7/8, 9/8, even 11/16."}
+]},
+{id:'food',city:'Food & Drink',cyr:'Храна и напитки',main:true,qs:[
+  {t:"Which cheese traditionally tops a Bulgarian Shopska salad?",
+   a:["Kashkaval","Sirene","Feta","Krema"],c:1,
+   why:"Grated white <b>sirene</b> over tomatoes, cucumbers, peppers and onion. The story goes that the red, green and white were chosen to match the flag when the salad was created for tourists in the 1960s. Kashkaval is the yellow cheese; feta is Greek."},
+  {t:"Who discovered the yogurt bacterium Lactobacillus bulgaricus?",
+   a:["Ivan Bogorov","Stamen Grigorov","Petar Beron","Asen Zlatarov"],c:1,
+   why:"<b>Stamen Grigorov</b>, aged 27, identified it in 1905 in a sample of Bulgarian yogurt while studying in Geneva — and it was named after his country. He later worked on an early treatment for tuberculosis. The other three are real Bulgarians too: a linguist, a primer author and a chemist."},
+  {t:"True or False: Rakia is considered Bulgaria's national drink.",
+   a:["True","False"],c:0,
+   why:"<b>True.</b> Fruit brandy, usually plum or grape, distilled at home across the country — and served, unlike almost anywhere else, at the <b>start</b> of the meal, with the salad."},
+  {t:"Bulgaria's “Rose Valley” near Kazanlak is famous for producing what?",
+   a:["Lavender","Saffron","Rose oil","Vanilla"],c:2,
+   why:"About <b>3,000 kg</b> of hand-picked blossoms go into a single kilogram of rose oil, which is why it has long been worth more by weight than gold. Picking starts before sunrise, while the oil content is highest. The Rose Festival has been held in Kazanlak since 1903."}
+]},
+{id:'arts',city:'Music, Arts & Landmarks',cyr:'Музика, изкуство и забележителности',main:true,qs:[
+  {t:"Gabrovo's most famous museum is dedicated to which subject?",
+   a:["Wine","Humour and satire","Roses","Folk costumes"],c:1,
+   why:"The <b>House of Humour and Satire</b> opened on 1 April 1972 — the first museum in the world dedicated entirely to humour. Its motto: “The world lasts because it laughs”."},
+  {t:"True or False: A Bulgarian folk song flew on the Voyager spacecraft.",
+   a:["True","False"],c:0,
+   why:"<b>True.</b> “Izlel e Delyu Haydutin”, sung by Valya Balkanska, was pressed onto the Voyager Golden Record in 1977. Both probes are now in interstellar space — which makes her the furthest-travelled voice in Bulgarian history."},
+  {t:"“Le Mystère des Voix Bulgares” choir recordings won which award?",
+   a:["An Oscar","A Grammy","A Brit Award","A Eurovision trophy"],c:1,
+   why:"A <b>Grammy</b>, in 1990, for Volume II — Best Traditional Folk Recording. Open-throat singing and deliberately clashing harmonies turned Bulgarian village music into a global sound."},
+  {t:"The Kazanlak Thracian Tomb is famous for its well-preserved what?",
+   a:["Gold treasure","Hellenistic murals","Marble statues","Mosaic floors"],c:1,
+   why:"A beehive-shaped brick tomb from around 300 BC, its dome painted with a Thracian couple at a funeral feast — the finest <b>Hellenistic murals</b> in the region, UNESCO-listed since 1979. Visitors see an exact replica; the original is sealed to protect the paint."},
+  {t:"Plovdiv was joint European Capital of Culture in which year?",
+   a:["2016","2019","2021","2023"],c:1,
+   why:"<b>2019</b>, shared with Matera in Italy — the first Bulgarian city ever to hold the title. Plovdiv is also one of the oldest continuously inhabited cities in Europe."}
+]},
+{id:'sports',city:'Sports',cyr:'Спорт',main:true,qs:[
+  {t:"Bulgaria upset which defending champions at the 1994 World Cup?",
+   a:["Brazil","Argentina","Germany","Italy"],c:2,
+   why:"<b>Germany</b> arrived in the USA as reigning champions and Bulgaria beat them 2–1 in the quarter-final — Stoichkov's free kick, then Letchkov's diving header. Bulgaria finished fourth, the best result in its history."},
+  {t:"Hristo Stoichkov won which major individual award in 1994?",
+   a:["FIFA World Player of the Year","Ballon d'Or","UEFA Player of the Year","Puskás Award"],c:1,
+   why:"The <b>Ballon d'Or</b>, as Europe's best player, in the same year he finished joint top scorer at the World Cup with 6 goals. FIFA's World Player of the Year that season went to Romário."},
+  {t:"True or False: Kostadinova's high jump record stood for 37 years before it was finally broken.",
+   a:["True","False"],c:0,
+   why:"<b>True.</b> Stefka Kostadinova cleared <b>2.09 m</b> in Rome on 30 August 1987 and the mark survived as the longest-standing record in athletics until Yaroslava Mahuchikh jumped 2.10 m in Paris in July 2024 — 37 years later."},
+  {t:"Bulgaria has traditionally dominated which Olympic sport?",
+   a:["Rhythmic gymnastics","Ice hockey","Rowing","Fencing"],c:0,
+   why:"<b>Rhythmic gymnastics</b> — the “golden girls” have been world and Olympic champions for decades. Weightlifting and wrestling are the country's other great strongholds."},
+  {t:"Grigor Dimitrov's career-high ATP ranking was world No. ___?",
+   a:["No. 1","No. 3","No. 8","No. 15"],c:1,
+   why:"<b>No. 3</b>, in November 2017, straight after winning the ATP Finals in London — the biggest title of his career and the highest ranking any Bulgarian man has reached."}
+]},
+{id:'bonus',city:'Bonus — Multi-Select',cyr:'Бонус',main:true,qs:[
+  {t:"Which of these are UNESCO-listed Bulgarian sites or traditions? Select all that apply.",
+   a:["Madara Rider","Nestinarstvo","Rila Monastery","House of Humour and Satire"],c:[0,1,2],multi:true,
+   why:"The <b>Madara Rider</b> (1979) and <b>Rila Monastery</b> (1983) are World Heritage Sites, and <b>nestinarstvo</b> joined the Intangible Cultural Heritage list in 2009. Gabrovo's House of Humour and Satire is a national treasure — but it is not UNESCO-listed."}
+]},
+{id:'vidin',city:'Vidin',cyr:'Видин',qs:[
+  {t:"Which non-Bulgarian city is Vidin's medieval name related to?",
+   a:["Vodena, otherwise known as today's Edessa — Greece","Bologna — Italy","Wieden — Austria"],c:1,
+   why:"Vidin used to be called <b>Bdin</b> by the tribes that inhabited the city in the early Middle Ages. In Roman times both cities were named <b>Bononia</b>, which roughly translates to “foundation” or “fortified place”. Over the centuries the two have distanced themselves from their shared phonetic origins, leading to their now wildly different names."},
+  {t:"Which fact about the fortress of Baba Vida is true?",
+   a:["It survived an 8-month siege by Byzantine forces","It used to be a Roman prison during ancient times","It is one of only two entirely preserved castles in Bulgaria"],c:0,
+   why:"In 1003 AD Baba Vida withstood the Byzantine siege of Vidin for a whole 8 months — led personally by Emperor Basil II against Tsar Samuel. Despite Samuel's astonishing diversions, the fortress eventually fell to the betrayal of the local Orthodox bishop who allegedly opened the gates. As for C: Baba Vida is the <b>only</b> fully preserved castle in Bulgaria — though not the only one you can visit today."}
+]},
+{id:'montana',city:'Montana',cyr:'Монтана',qs:[
+  {t:"Which of the following discoveries was made in Montana?",
+   a:["An ancient Thracian fortress wall from the 1st millennium BC","A Roman burial tomb built in the mid-4th century AD","Fossil remains of gars — ancient predatory fish — about 157 million years old"],c:0,
+   why:"The remains of a Thracian fortress were found directly beneath the later Roman fortress of <b>Castra ad Montanesium</b> on Kaleto Hill. B and C are true too — just for other regions: the Roman tomb is in Silistra, and the gar fossils were discovered in the province of Pernik in 2020."}
+]},
+{id:'pleven',city:'Pleven',cyr:'Плевен',qs:[
+  {t:"Pleven's most famous landmark is an enormous circular painting you stand inside. What does it show?",
+   a:["The Battle of Shipka Pass","The Siege of Pleven of 1877","The Battle of Klokotnitsa"],c:1,
+   why:"The <b>Pleven Epopee 1877</b> panorama opened on 10 December 1977 — exactly 100 years after the Ottoman garrison surrendered. The siege lasted five months and cost tens of thousands of lives, but it broke the Ottoman defence and opened the road to the Liberation. Only a handful of panorama museums like it exist in the world."},
+  {t:"A basketball player from Pleven's Spartak became the first athlete from the Eastern Bloc to play in the NBA. Which team signed him in 1985?",
+   a:["Phoenix Suns","Chicago Bulls","Boston Celtics"],c:0,
+   why:"<b>Georgi Glouchkov</b>, born in Pleven in 1960, signed with the Phoenix Suns in 1985 and became the first player from behind the Iron Curtain to reach the NBA. He played a single season in Phoenix before returning home."}
+]},
+{id:'tarnovo',city:'Veliko Tarnovo',cyr:'Велико Търново',qs:[
+  {t:"Veliko Tarnovo was the capital of the Second Bulgarian Empire. Which of these also happened there?",
+   a:["Bulgaria's first constitution was adopted in 1879","The Treaty of Berlin was signed","Khan Asparuh was crowned"],c:0,
+   why:"The <b>Tarnovo Constitution</b> was adopted on 16 April 1879 by the Constituent Assembly — one of the most liberal constitutions in Europe at the time. The city kept its symbolic weight: on 22 September 1908 Bulgaria's independence was proclaimed in Veliko Tarnovo, at the Holy Forty Martyrs Church."},
+  {t:"Arbanasi's Nativity Church hides more than 3,500 painted figures inside — yet from the outside it looks like a plain stone barn. Why?",
+   a:["It was genuinely built as a barn and converted much later","Ottoman rules did not allow a church to stand out or rise above the houses around it","Its decorated façade was destroyed by an earthquake"],c:1,
+   why:"The church is sunk into the ground with no dome and no bell tower, because under Ottoman rule a church was not allowed to draw attention. So everything went <b>inside</b>: five rooms of frescoes painted through the 17th century, one of the richest painted interiors in the country."}
+]},
+{id:'dobrich',city:'Dobrich',cyr:'Добрич',qs:[
+  {t:"Where does the name Dobrich come from?",
+   a:["From Dobrotitsa, who ruled the Dobrudzha region in the 14th century","From the Old Bulgarian words for “a good place”","From the poet Dobri Chintulov"],c:0,
+   why:"Despot <b>Dobrotitsa</b> ruled the independent Principality of Karvuna in the 14th century, and both the town and the whole Dobrudzha region carry his name. Few cities have changed names as often: Hadzhioglu Pazardzhik under the Ottomans, Bazargic under Romanian rule (1913–1940), Tolbukhin after a Soviet marshal (1949–1990), and Dobrich ever since."}
+]},
+{id:'varna',city:'Varna',cyr:'Варна',qs:[
+  {t:"What world record does the Varna Necropolis hold?",
+   a:["The oldest processed gold in the world","The largest Roman bath complex ever found","The oldest written alphabet"],c:0,
+   why:"In 1972 an excavator operator digging a cable trench cut into a 6,500-year-old cemetery. It held over <b>3,000 gold objects</b> weighing more than 6 kg, made between roughly 4600 and 4200 BC — older than the gold of Egypt or Mesopotamia. Grave 43 alone held more gold than had been found anywhere else in the world for that period."},
+  {t:"Since 1964 Varna has hosted the world's first competition of its kind. Which one?",
+   a:["The International Ballet Competition","The World Accordion Championship","The World Beach Volleyball Cup"],c:0,
+   why:"The <b>Varna International Ballet Competition</b> was the first international ballet competition ever held, and is still one of the most prestigious — Mikhail Baryshnikov took gold there in 1966. Varna also runs Bulgaria's oldest festival, Varna Summer, founded in 1926."}
+]},
+{id:'burgas',city:'Bourgas',cyr:'Бургас',qs:[
+  {t:"In the Strandzha villages of the Bourgas region, an ancient ritual is still performed every year on 3 June. What do the participants do?",
+   a:["Dance barefoot on live embers","Jump across a river at midnight","Keep complete silence for a whole day"],c:0,
+   why:"<b>Nestinarstvo</b> — barefoot dancing on glowing coals, carrying the icons of Saints Constantine and Helena to the beat of a sacred drum. UNESCO added it to its list of Intangible Cultural Heritage in 2009, and the village of Bulgari is the only place where the ritual survived unbroken."},
+  {t:"Atanasovsko Lake, right at the edge of Bourgas, is famous for two things at once. Which?",
+   a:["Sea salt harvested by hand, and one of Europe's biggest bird migration routes","The deepest water in the country, and its only freshwater seals","A sunken Roman city, and Bulgaria's only coral reef"],c:0,
+   why:"The salt pans have been worked since 1906, and the lake's brine and black mud are still used for therapy. The lake also sits on the <b>Via Pontica</b>, the migration corridor that funnels storks, pelicans and birds of prey down the Black Sea coast — over 300 bird species have been recorded around Bourgas."}
+]},
+{id:'zagora',city:'Stara Zagora',cyr:'Стара Загора',qs:[
+  {t:"What does Stara Zagora's Neolithic Dwellings Museum protect?",
+   a:["The best-preserved Neolithic houses in Europe, around 8,000 years old","The oldest church in the Balkans","The world's oldest wooden wheel"],c:0,
+   why:"Two houses from the 6th millennium BC that burned down — and were baked and preserved by that very fire, with their walls, ovens, grinding stones and even the grain still in place. The museum was built directly on top of the excavation, so you walk in and look down into a <b>Neolithic kitchen</b>."},
+  {t:"Every June, Kazanlak in the Stara Zagora region celebrates the rose harvest. Roughly how many kilograms of blossoms does it take to distil ONE kilogram of rose oil?",
+   a:["About 30 kg","About 300 kg","About 3,000 kg"],c:2,
+   why:"Around <b>3,000 kg</b> of hand-picked blossoms — which is why Bulgarian rose oil has long been worth more by weight than gold. Picking starts before sunrise, while the oil content is at its highest. The Rose Festival has been held in Kazanlak since 1903, and the same valley holds the UNESCO-listed Thracian Tomb of Kazanlak."}
+]},
+{id:'gabrovo',city:'Gabrovo',cyr:'Габрово',qs:[
+  {t:"What is Gabrovo's most famous museum known as?",
+   a:["The Palace and Botanical Gardens of Gabrovo","The National Museum of History","The House of Humour and Satire"],c:2,
+   why:"Gabrovo's <b>House of Humour and Satire</b> is the first museum in the world dedicated entirely to humour, opened on 1 April 1972, with the motto “The world lasts because it laughs”. The other two museums also exist — but in Balchik, Dobrich, and in Sofia respectively."}
+]},
+{id:'plovdiv',city:'Plovdiv',cyr:'Пловдив',qs:[
+  {t:"Which fact about Plovdiv is true?",
+   a:["It is the fifth-largest city in Bulgaria","It was the European Capital of Culture in 2019","It is one of the few Bulgarian cities never to have changed its name"],c:1,
+   why:"Plovdiv held the title of <b>European Capital of Culture in 2019</b> together with Matera in Italy — the first Bulgarian city ever to do so. A is wrong: Plovdiv is the second-largest city in the country. And C is spectacularly wrong: it has been Eumolpias, Philippopolis, Pulpudeva, Trimontium, Filibe — and finally Plovdiv."},
+  {t:"Plovdiv's Roman theatre still hosts concerts and opera today. How was it found?",
+   a:["A landslide in the early 1970s uncovered it","It was exposed while digging the city's metro","It was never lost — it has been in use non-stop"],c:0,
+   why:"A landslide in 1972 opened up the hillside and revealed the theatre of <b>Philippopolis</b>, built around 90 AD under Emperor Domitian. It seats about 5,000 people and, once excavated and restored, went straight back to work — nearly 2,000 years old and still a working stage."}
+]},
+{id:'blagoevgrad',city:'Blagoevgrad',cyr:'Благоевград',qs:[
+  {t:"Which place in the Blagoevgrad region is the smallest town in Bulgaria?",
+   a:["Melnik","Bansko","Sandanski"],c:0,
+   why:"<b>Melnik</b> has around 200 residents and still holds town status. It sits beneath enormous sandstone pyramids, and its heavy red wine from the local broad-leaved vine has been famous for centuries — legend says Winston Churchill had barrels of it sent to him every year."},
+  {t:"Bansko, in the Blagoevgrad region, has been a regular stop on which international sporting circuit since 2009?",
+   a:["The Alpine Skiing World Cup","The Tour de France","The Formula 1 calendar"],c:0,
+   why:"Bansko's runs under Todorka peak have hosted World Cup slaloms, giant slaloms and downhills since 2009. The town is a cultural heavyweight too: <b>Paisiy Hilendarski</b>, who wrote “Istoriya Slavyanobolgarskaya” in 1762 and lit the fuse of the National Revival, was born here."}
+]},
+{id:'kyustendil',city:'Kyustendil',cyr:'Кюстендил',qs:[
+  {t:"Rila Monastery, in the Kyustendil region, is Bulgaria's largest monastery. Which part of it is the oldest still standing?",
+   a:["Hrelyu's Tower, from the 1330s","The main church, from the 10th century","The monastery kitchen, from the 15th century"],c:0,
+   why:"Almost the whole complex burned down in 1833 and was rebuilt by the finest masters of the National Revival — the striped arcades and Zahari Zograf's frescoes are all 19th-century. Only <b>Hrelyu's Tower</b>, raised in 1334–35, survived the fire. The monastery has been a UNESCO World Heritage Site since 1983."},
+  {t:"Kyustendil is called “the orchard of Bulgaria”. Which painter, born in the region, made those orchards and the women working in them famous?",
+   a:["Vladimir Dimitrov – The Master","Zlatyu Boyadzhiev","Ivan Milev"],c:0,
+   why:"<b>Vladimir Dimitrov – Maystora</b> was born in 1882 in the village of Frolosh. He painted Kyustendil's village women haloed in fruit and sunlight, lived like a monk, refused money and gave paintings away. The other two are also major Bulgarian painters — Zlatyu Boyadzhiev belongs to Plovdiv, Ivan Milev to Kazanlak."}
+]},
+{id:'sofia',city:'Sofia',cyr:'София',qs:[
+  {t:"Sofia's coat of arms carries a motto. What does it say?",
+   a:["“It grows, but does not age”","“Faithful to the end”","“Under the mountain, above time”"],c:0,
+   why:"<b>“Расте, но не старее”</b> — it grows, but does not age. The city has been inhabited for some 7,000 years and was called Serdica, Ulpia Serdica, Sredets and Triaditsa before taking its name from the church of St. Sofia. Constantine the Great is said to have called it “Serdica is my Rome”."},
+  {t:"Sofia is one of very few European capitals where you can do what inside the city limits?",
+   a:["Ski down a mountain","Dive to a shipwreck","Cross an active volcano"],c:0,
+   why:"<b>Vitosha</b> rises to 2,290 m at Cherni Vrah and its slopes belong to Sofia Municipality — you can take public transport from the centre to a ski lift. Vitosha was declared a nature park in 1934, the first on the whole Balkan Peninsula."}
+]}
+];
+
+/* ---------------- small helpers ---------------- */
+var app=document.getElementById('app');
+var GLYPH=['◆','✕','▲','●'], LETTER=['A','B','C','D'];
+var LIVE_URL='https://claude.ai/code/artifact/058fae95-ca89-4630-a13b-c1f7e827c51f';
+var TOTAL=0, RMAP={};
+ROUNDS.forEach(function(r){ RMAP[r.id]=r; TOTAL+=r.qs.length; });
+var CITIES=ROUNDS.filter(function(r){return !r.bonus;}).length;
+
+function qid(rid,i){ return rid+':'+i; }
+function qOf(id){ var p=id.split(':'); var r=RMAP[p[0]]; return r?r.qs[+p[1]]:null; }
+function rOf(id){ return RMAP[id.split(':')[0]]; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function fmt(n){ return (n||0).toLocaleString('en-US'); }
+function rid(){ return Math.random().toString(36).slice(2,10); }
+function ls(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem('bqn.'+k)); localStorage.setItem('bqn.'+k,JSON.stringify(v)); }catch(e){ return null; } }
+function lsDel(k){ try{ localStorage.removeItem('bqn.'+k); }catch(e){} }
+var MYID = (function(){ var v=null; try{ v=localStorage.getItem('bqn.uid'); }catch(e){} if(!v){ v='p'+rid(); try{ localStorage.setItem('bqn.uid',v); }catch(e){} } return v; })();
+
+/* ---------------- state ---------------- */
+var S={ screen:'home', mode:null, sel:{}, limit:30, shuffle:false, deck:[], i:0, busy:false, err:null,
+        pin:null, game:null, players:[], unsubA:null, unsubB:null,
+        me:null, pick:null, gain:0, lastRight:false, deadline:0, qDur:30, pQ:-1,
+        roster:[], marks:{}, phase:'q', soloLog:[], soloScore:0, soloStreak:0, mpick:[], pickLabel:'' };
+ROUNDS.forEach(function(r){ S.sel[r.id]=!!r.main; });
+
+/* ---------------- db ---------------- */
+var DB=null, DBSTATE='loading';
+if(window.claude && typeof window.claude.use==='function'){
+  window.claude.use('db').then(function(d){ DB=d; DBSTATE=d?'on':'off'; if(S.screen==='home'||S.screen==='join') paint(); },
+                               function(){ DBSTATE='off'; if(S.screen==='home') paint(); });
+} else { DBSTATE='off'; }
+
+/* ---------------- local network mode ---------------- */
+var LAN=window.LAN||null, LANID=null, SKEW=0, ES=null;
+function api(path,body){
+  return fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})})
+    .then(function(r){ return r.json(); });
+}
+function lanCmd(cmd,extra){
+  var b={key:LAN?LAN.key:'',cmd:cmd};
+  for(var k in (extra||{})) b[k]=extra[k];
+  return api('/cmd',b).catch(function(){});
+}
+function lanConnect(){
+  if(ES||!LAN||!window.EventSource) return;
+  try{ ES=new EventSource('/events'); }catch(e){ return; }
+  ES.onmessage=function(ev){ try{ applyState(JSON.parse(ev.data)); }catch(e){} };
+}
+function lanDeadline(st){ return st.qStartAt + st.limit*1000 + SKEW; }
+function applyState(st){
+  if(!st) return;
+  SKEW=Date.now()-st.now;
+  S.qDur=st.limit||30;
+  if(st.deck && st.deck.length) S.deck=st.deck;
+  S.players=st.players||[];
+  S.game={status:st.status,qIndex:st.qIndex,qStartAt:st.qStartAt,limit:st.limit,deck:S.deck};
+  if(st.qIndex>=0) S.i=st.qIndex;
+  if(LAN.role==='host') lanHost(st); else lanPlayer(st);
+}
+function lanHost(st){
+  if(st.status==='setup'){
+    if(S.screen==='setup'||S.screen==='roster'||S.screen==='home') return;
+    S.screen='setup'; return paint();
+  }
+  if(st.status==='lobby'){ clearTimer(); S.screen='hostLobby'; return paint(); }
+  if(st.status==='question'){
+    if(S.screen!=='hostQ'||S.qShown!==st.qIndex){
+      S.qShown=st.qIndex; S.screen='hostQ'; S.deadline=lanDeadline(st);
+      armTimer(Math.max(0,(S.deadline-Date.now())/1000),null);
+    }
+    return paint();
+  }
+  if(st.status==='reveal'){ clearTimer(); S.screen='hostR'; return paint(); }
+  if(st.status==='final'){ clearTimer(); S.qShown=-1; S.screen='hostF'; return paint(); }
+}
+function lanPlayer(st){
+  if(!S.me){ if(S.screen!=='lanjoin'){ S.screen='lanjoin'; paint(); } return; }
+  var mine=null;
+  S.players.forEach(function(p){ if(p.id===LANID) mine=p; });
+  if(mine){ S.me.score=mine.score||0; S.me.streak=mine.streak||0; S.me.answers=mine.answers||{}; }
+  if(st.status==='setup'||st.status==='lobby'){
+    clearTimer(); S.pQ=-1;
+    if(S.screen!=='pLobby'){ S.screen='pLobby'; paint(); } else paint();
+    return;
+  }
+  if(st.status==='question'){
+    if(S.pQ!==st.qIndex){
+      S.pQ=st.qIndex; S.pick=null; S.mpick=[]; S.gain=0; S.lastRight=false; S.pickLabel='';
+      S.deadline=lanDeadline(st); S.screen='pQ';
+      armTimer(Math.max(0,(S.deadline-Date.now())/1000),function(){
+        if(S.pick!==null) return;
+        if(S.mpick.length){ ACTS.mlock(); return; }
+        S.screen='pWait'; paint();
+      });
+      paint();
+    }
+    return;
+  }
+  if(st.status==='reveal'){ clearTimer(); S.screen='pR'; return paint(); }
+  if(st.status==='final'){ clearTimer(); S.screen='pF'; return paint(); }
+}
+function lanAnswer(pick){
+  api('/answer',{id:LANID,q:S.game.qIndex,pick:pick}).then(function(r){
+    if(!r||!r.ok) return;
+    S.lastRight=!!r.right; S.gain=r.points||0;
+    if(S.me){ S.me.score=r.score; S.me.streak=r.streak; }
+    paint();
+  }).catch(function(){});
+}
+
+/* ---------------- timer ---------------- */
+function armTimer(secs,onEnd){ S.tStart=Date.now(); S.tDur=secs; S.tEnd=onEnd; }
+function clearTimer(){ S.tDur=0; S.tEnd=null; }
+setInterval(function(){
+  if(!S.tDur) return;
+  var left=Math.max(0, S.tStart+S.tDur*1000-Date.now());
+  var f=document.querySelector('[data-tfill]'), n=document.querySelector('[data-tnum]');
+  if(f) f.style.transform='scaleX('+(left/(S.tDur*1000))+')';
+  if(n) n.textContent=Math.ceil(left/1000);
+  if(left<=0){ var cb=S.tEnd; clearTimer(); if(cb) cb(); }
+},100);
+
+/* ---------------- deck ---------------- */
+function buildDeck(){
+  var d=[];
+  ROUNDS.forEach(function(r){ if(S.sel[r.id]) r.qs.forEach(function(q,i){ d.push(qid(r.id,i)); }); });
+  if(S.shuffle){ for(var i=d.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=d[i]; d[i]=d[j]; d[j]=t; } }
+  return d;
+}
+function selCount(){ var n=0; ROUNDS.forEach(function(r){ if(S.sel[r.id]) n+=r.qs.length; }); return n; }
+
+/* ---------------- shared view pieces ---------------- */
+function shev(){ return '<canvas class="shev" aria-hidden="true"></canvas>'; }
+function timerBar(){ return '<div class="timer"><div class="timer__num" data-tnum>'+Math.ceil(S.tDur||0)+'</div><div class="timer__bar"><div class="timer__fill" data-tfill></div></div></div>'; }
+function isRight(q,k){ return Array.isArray(q.c) ? q.c.indexOf(k)>=0 : k===q.c; }
+function answerLine(q){
+  return Array.isArray(q.c) ? 'Correct answers: '+q.c.map(function(k){ return LETTER[k]; }).join(', ')+'.'
+                            : 'Correct answer: '+LETTER[q.c]+'.';
+}
+function sameSet(a,b){
+  var x=(a||[]).slice().sort(), y=(b||[]).slice().sort();
+  return x.length===y.length && x.every(function(v,i){ return v===y[i]; });
+}
+function optionList(q,opts){
+  opts=opts||{};
+  var msel=opts.multiSel||[];
+  return '<div class="opts '+(opts.player?'opts--player':'opts--row')+' n'+q.a.length+'">'+q.a.map(function(txt,k){
+    var cls='opt'+(opts.static?' is-static':'');
+    if(opts.reveal){ cls += (isRight(q,k)?' is-right':' is-dim'); }
+    if(opts.picked===k || msel.indexOf(k)>=0) cls+=' is-picked';
+    return '<button class="'+cls+'" data-k="'+k+'" '+(opts.act?'data-act="'+opts.act+'" data-i="'+k+'"':'disabled')+'>'
+      +'<span class="glyph">'+GLYPH[k]+' '+LETTER[k]+'</span><span>'+txt+'</span>'
+      +(opts.counts?'<span class="cnt">'+opts.counts[k]+'</span>':'')+'</button>';
+  }).join('')+'</div>';
+}
+function headerFor(id,idx,total){
+  var r=rOf(id);
+  return '<div class="board__top"><div class="place"><span>'+esc(r.cyr)+'</span><b>'+esc(r.city)+'</b></div>'
+    +'<div class="counter">QUESTION '+String(idx+1).padStart(2,'0')+' / '+String(total).padStart(2,'0')+'</div></div>';
+}
+function leaderboard(list,opts){
+  opts=opts||{};
+  if(!list.length) return '<p class="small">No scores yet.</p>';
+  return '<div class="lb">'+list.slice(0,opts.max||8).map(function(p,i){
+    var cls='lb__row'+(i===0?' is-top':'')+(opts.meId&&p.id===opts.meId?' is-me':'');
+    return '<div class="'+cls+'"><span class="lb__rank">'+(i+1)+'</span><span class="lb__name">'+esc(p.name)+'</span>'
+      +'<span class="lb__pts">'+fmt(p.score)+(opts.delta&&p.delta?' <span class="lb__delta">+'+fmt(p.delta)+'</span>':'')+'</span></div>';
+  }).join('')+'</div>';
+}
+function podium(list){
+  if(list.length<3) return leaderboard(list,{max:3});
+  var order=[1,0,2], cls=['pod--1','pod--2','pod--3'], rk=['SECOND','WINNER','THIRD'];
+  return '<div class="podium">'+order.map(function(idx,slot){
+    var p=list[idx]; if(!p) return '<div></div>';
+    var c = idx===0?'pod--1':(idx===1?'pod--2':'pod--3');
+    return '<div class="pod '+c+'"><span class="rank">'+(idx===0?'WINNER':(idx===1?'SECOND':'THIRD'))+'</span><b>'+esc(p.name)+'</b><span class="pts">'+fmt(p.score)+'</span></div>';
+  }).join('')+'</div>';
+}
+function sorted(list){ return list.slice().sort(function(a,b){ return (b.score||0)-(a.score||0) || String(a.name).localeCompare(String(b.name)); }); }
+
+/* ---------------- screens ---------------- */
+var V={};
+
+V.home=function(){
+  var liveOK = (DBSTATE==='on') || !!LAN;
+  var dbLine = LAN ? '<span class="dot"></span>On this Wi-Fi'
+             : DBSTATE==='on' ? '<span class="dot"></span>Ready'
+             : DBSTATE==='loading' ? '<span class="dot dot--wait"></span>Connecting…'
+             : '<span class="dot dot--off"></span>Needs the online page';
+  var sess=ls('session');
+  var stg=ls('stage'); if(stg && (!stg.deck || !stg.deck.length || stg.i>=stg.deck.length)) stg=null;
+  var main=ROUNDS.filter(function(r){ return r.main; }), city=ROUNDS.filter(function(r){ return !r.main; });
+  var mainQ=0; main.forEach(function(r){ mainQ+=r.qs.length; });
+  var cityQ=0; city.forEach(function(r){ cityQ+=r.qs.length; });
+  function list(rs){ return '<div class="roundlist">'+rs.map(function(r){
+      return '<div><span class="cy">'+esc(r.cyr)+'</span><b>'+esc(r.city)+'</b><span class="n">'+r.qs.length+'</span></div>'; }).join('')+'</div>'; }
+  return '<div class="pane">'
+  +'<header class="head">'+shev()
+  +'<div class="head__top"><div class="stack stack--tight">'
+    +'<p class="eyebrow">Българска културна вечер</p>'
+    +'<h1>Bulgarian <em>Quiz</em> Night</h1>'
+    +'<p class="lede">History, traditions, food, music and sport — twenty-five questions, three or four answers each, and a short story to read out after every reveal.</p>'
+  +'</div><div class="stats">'
+    +'<div class="stat"><b>'+mainQ+'</b><span>Questions</span></div>'
+    +'<div class="stat"><b>'+main.length+'</b><span>Categories</span></div>'
+    +'<div class="stat"><b>+'+cityQ+'</b><span>Extra city set</span></div>'
+  +'</div></div></header>'
+  +(sess?'<div class="notice notice--ok"><b>'+esc(sess.name)+'</b>, you were in game '+esc(sess.pin)+'. <button class="btn btn--sm" data-act="rejoin" style="margin-left:8px">Rejoin</button> <button class="btn btn--sm btn--ghost" data-act="forget">Forget</button></div>':'')
+  +(stg?'<div class="notice notice--ok">A stage game is paused at question '+(stg.i+1)+' of '+stg.deck.length+'. <button class="btn btn--sm" data-act="resumestage" style="margin-left:8px">Resume</button> <button class="btn btn--sm btn--ghost" data-act="dropstage">Discard</button></div>':'')
+  +(DBSTATE==='off'&&!LAN?'<div class="notice">You opened this file from your own computer, so <b>live phone rooms are switched off</b> — a shared room can only run on the published page: <a href="'+LIVE_URL+'" target="_blank" rel="noopener">open the online version</a>. Stage mode and the practice run work perfectly right here, with no internet at all.</div>':'')
+  +(S.err?'<div class="notice">'+esc(S.err)+'</div>':'')
+  +'<div class="modes">'
+    +'<button class="mode" data-tone="madder" data-act="go" data-to="setup-live" '+(liveOK?'':'disabled')+'>'
+      +'<span class="tag">'+dbLine+'</span><b>Host a live room</b><p>Everyone plays on their own phone. Four-digit PIN, speed scoring, live leaderboard after every question.</p></button>'
+    +'<button class="mode" data-tone="gold" data-act="go" data-to="join" '+(liveOK?'':'disabled')+'>'
+      +'<span class="tag">For the audience</span><b>Join a game</b><p>Type the PIN shown on the big screen, pick a name, and answer on your phone.</p></button>'
+    +'<button class="mode" data-tone="pine" data-act="go" data-to="setup-stage">'
+      +'<span class="tag">Works offline</span><b>Stage mode</b><p>One screen for the room. You add the teams, tap who got it right, the app keeps the score. No phones needed.</p></button>'
+    +'<button class="mode" data-tone="rose" data-act="go" data-to="setup-solo">'
+      +'<span class="tag">Rehearsal</span><b>Practice run</b><p>Play the whole set alone to check the timing before the night starts.</p></button>'
+  +'</div>'
+  +'<div class="card"><h3>Tonight&rsquo;s set — '+mainQ+' questions</h3>'+list(main)
+  +'<h3 class="grouplabel">Optional extra — a tour of the country, '+cityQ+' questions</h3>'+list(city)
+  +'<p class="footnote">Answers are called by shape and letter — <b>'+GLYPH[0]+' A</b>, <b>'+GLYPH[1]+' B</b>, <b>'+GLYPH[2]+' C</b>, <b>'+GLYPH[3]+' D</b> — which carries better across a noisy room than colours. A correct answer is worth up to 1,000 points depending on how fast it comes in, plus 100 for every answer in an unbroken streak.</p></div>'
+  +'</div>';
+};
+
+function chips(isMain){
+  return ROUNDS.filter(function(r){ return !!r.main===isMain; }).map(function(r){
+    return '<button class="chip'+(S.sel[r.id]?' is-on':'')+'" data-act="togr" data-id="'+r.id+'">'+esc(r.city)+'<span class="n">'+r.qs.length+'</span></button>';
+  }).join('');
+}
+V.setup=function(){
+  var isLive=S.mode==='live', isStage=S.mode==='stage';
+  return '<div class="pane">'
+  +'<div class="stack stack--tight"><p class="eyebrow">'+(isLive?'Live room':(isStage?'Stage mode':'Practice run'))+'</p>'
+  +'<h2>Choose tonight\'s rounds</h2></div>'
+  +'<div class="card"><div class="spread"><h3>Rounds</h3><div class="btnrow">'
+    +'<button class="btn btn--sm btn--ghost" data-act="selmain">Tonight&rsquo;s set</button>'
+    +'<button class="btn btn--sm btn--ghost" data-act="selcity">City tour</button>'
+    +'<button class="btn btn--sm btn--ghost" data-act="selall">Everything</button>'
+    +'<button class="btn btn--sm btn--ghost" data-act="selnone">None</button></div></div>'
+  +'<p class="eyebrow eyebrow--quiet">Tonight&rsquo;s set</p><div class="chips">'+chips(true)+'</div>'
+  +'<p class="eyebrow eyebrow--quiet grouplabel">Optional — city tour</p><div class="chips">'+chips(false)+'</div></div>'
+  +'<div class="grid2">'
+    +'<div class="card"><h3>Seconds per question</h3><div class="seg">'
+      +[15,20,30,45,60].map(function(n){ return '<button data-act="limit" data-n="'+n+'" class="'+(S.limit===n?'is-on':'')+'">'+n+'</button>'; }).join('')
+    +'</div><p class="small">'+(isStage?'The timer is just for atmosphere in stage mode — you control the reveal.':'Answer sooner, score higher: 1,000 points at the buzzer start, 500 at the very end.')+'</p></div>'
+    +'<div class="card"><h3>Order</h3><div class="seg">'
+      +'<button data-act="shuf" data-v="0" class="'+(S.shuffle?'':'is-on')+'">Vidin → Sofia</button>'
+      +'<button data-act="shuf" data-v="1" class="'+(S.shuffle?'is-on':'')+'">Shuffled</button></div>'
+      +'<p class="small">The set is ordered as a tour of the country, matching a presentation that moves city by city.</p></div>'
+  +'</div>'
+  +(S.err?'<div class="notice">'+esc(S.err)+'</div>':'')
+  +'<div class="spread"><span class="pill"><b>'+selCount()+'</b> questions selected</span>'
+  +'<div class="btnrow"><button class="btn btn--ghost" data-act="go" data-to="home">Back</button>'
+  +'<button class="btn btn--primary btn--big" data-act="'+(isLive?'openroom':(isStage?'go':'startsolo'))+'" '+(isStage?'data-to="roster"':'')+' '+(selCount()?'':'disabled')+'>'
+  +(S.busy?'Opening…':(isLive?'Open the room':(isStage?'Next: the teams':'Start the run')))+'</button></div></div>'
+  +'</div>';
+};
+
+V.roster=function(){
+  return '<div class="pane">'
+  +'<div class="stack stack--tight"><p class="eyebrow">Stage mode</p><h2>Who is playing?</h2>'
+  +'<p class="lede">Add every player or team. After each reveal you tap the ones who got it right — the app keeps the running score.</p></div>'
+  +'<div class="card"><div class="field"><label for="rname">Add a player or team</label>'
+  +'<div class="btnrow"><input type="text" id="rname" placeholder="e.g. Team Baba Vida" maxlength="24" style="flex:1;min-width:200px">'
+  +'<button class="btn btn--gold" data-act="addr">Add</button></div></div>'
+  +(S.roster.length?'<div class="chips">'+S.roster.map(function(p){ return '<span class="chip chip--flat"><b>'+esc(p.name)+'</b><button class="x" data-act="delr" data-id="'+p.id+'" aria-label="Remove" style="background:none;border:0;cursor:pointer;color:inherit">×</button></span>'; }).join('')+'</div>':'<p class="small">No one added yet.</p>')
+  +'</div>'
+  +'<div class="spread"><span class="pill"><b>'+S.roster.length+'</b> playing · <b>'+S.deck.length+'</b> questions</span>'
+  +'<div class="btnrow"><button class="btn btn--ghost" data-act="go" data-to="setup">Back</button>'
+  +'<button class="btn btn--primary btn--big" data-act="startstage" '+(S.roster.length?'':'disabled')+'>Start the quiz</button></div></div>'
+  +'</div>';
+};
+
+V.lanjoin=function(){
+  return '<div class="pane">'
+  +'<header class="head">'+shev()
+  +'<div class="stack stack--tight"><p class="eyebrow">Българска културна вечер</p>'
+  +'<h1>Bulgarian <em>Quiz</em> Night</h1>'
+  +'<p class="lede">Put in a name and you are in — no PIN, no account. Watch the big screen; every question appears on this phone.</p></div></header>'
+  +'<div class="card" style="max-width:460px">'
+    +'<div class="field"><label for="lname">Your name</label>'
+    +'<input type="text" id="lname" maxlength="18" placeholder="How you want to appear" value="'+esc(S.nameTry||'')+'"></div>'
+    +(S.err?'<div class="notice">'+esc(S.err)+'</div>':'')
+    +'<button class="btn btn--primary btn--big" data-act="lanjoin">'+(S.busy?'Joining…':'Join the game')+'</button>'
+  +'</div></div>';
+};
+V.join=function(){
+  return '<div class="pane">'
+  +'<div class="stack stack--tight"><p class="eyebrow">Join a game</p><h2>Enter the PIN from the big screen</h2></div>'
+  +'<div class="card" style="max-width:460px">'
+    +'<div class="field"><label for="jpin">Game PIN</label><input type="text" id="jpin" class="pin" inputmode="numeric" maxlength="4" placeholder="0000" value="'+esc(S.pinTry||'')+'"></div>'
+    +'<div class="field"><label for="jname">Your name</label><input type="text" id="jname" maxlength="18" placeholder="How you want to appear" value="'+esc(S.nameTry||'')+'"></div>'
+    +(S.err?'<div class="notice">'+esc(S.err)+'</div>':'')
+    +'<div class="btnrow"><button class="btn btn--primary btn--big" data-act="dojoin" style="flex:1">'+(S.busy?'Joining…':'Join the game')+'</button>'
+    +'<button class="btn btn--ghost" data-act="go" data-to="home">Back</button></div>'
+  +'</div></div>';
+};
+
+/* ---------------- live host screens ---------------- */
+function answersFor(i){ var c=[0,0,0,0], n=0; S.players.forEach(function(p){ var a=p.answers&&p.answers[String(i)]; if(a){ n++; if(typeof a.k==='number' && c[a.k]!==undefined) c[a.k]++; } }); return {c:c,n:n}; }
+function deltaList(){ return sorted(S.players.map(function(p){ var a=p.answers&&p.answers[String(S.i)]; return {id:p.id,name:p.name,score:p.score||0,delta:a?a.p:0}; })); }
+
+V.hostLobby=function(){
+  var lan=!!LAN;
+  return '<div class="pane pane--wide">'
+  +'<div class="spread"><div class="stack stack--tight"><p class="eyebrow">'+(lan?'Room open on this Wi-Fi':'Live room open')+'</p>'
+  +'<h2>'+(lan?'Everyone opens this address in any browser':'Everyone opens this same page and taps “Join a game”')+'</h2></div>'
+  +'<span class="pill"><span class="dot"></span><b>'+S.players.length+'</b> in the room</span></div>'
+  +'<div class="col2"><div class="pinbox"><span class="hint">'+(lan?'Type it exactly':'Game PIN')+'</span>'
+  +(lan?'<span class="addr">'+esc(LAN.addr||'')+'</span>':'<span class="code">'+esc(S.pin)+'</span>')
+  +'<span class="small">'+S.deck.length+' questions · '+(S.game&&S.game.limit||S.limit)+' seconds each</span></div>'
+  +'<div class="card"><h3>Players</h3>'
+  +(S.players.length?'<div class="chips">'+sorted(S.players).map(function(p){ return '<span class="chip chip--flat"><b>'+esc(p.name)+'</b></span>'; }).join('')+'</div>':'<p class="small">Waiting for the first player…</p>')
+  +'</div></div>'
+  +shev()
+  +'<div class="spread"><button class="btn btn--ghost" data-act="quit">Close the room</button>'
+  +'<button class="btn btn--primary btn--big" data-act="hstart" '+(S.players.length?'':'disabled')+'>Start question 1</button></div>'
+  +'</div>';
+};
+
+V.hostQ=function(){
+  var id=S.deck[S.i], q=qOf(id), a=answersFor(S.i);
+  return '<div class="pane pane--wide pane--play">'
+  +headerFor(id,S.i,S.deck.length)+timerBar()
+  +'<p class="qtext">'+q.t+'</p>'
+  +optionList(q,{static:true})
+  +'<div class="spread"><span class="pill"><b>'+a.n+'</b> of <b>'+S.players.length+'</b> answered</span>'
+  +'<button class="btn btn--gold" data-act="hreveal">Reveal the answer</button></div>'
+  +'</div>';
+};
+
+V.hostR=function(){
+  var id=S.deck[S.i], q=qOf(id), a=answersFor(S.i), last=S.i>=S.deck.length-1;
+  return '<div class="pane pane--wide pane--play">'
+  +headerFor(id,S.i,S.deck.length)
+  +'<p class="qtext qtext--sm">'+q.t+'</p>'
+  +optionList(q,{static:true,reveal:true,counts:q.multi?null:a.c})
+  +'<div class="col2"><div class="why"><b>'+answerLine(q)+'</b> '+q.why+'</div>'
+  +'<div class="stack stack--tight"><h3>Standings</h3>'+leaderboard(deltaList(),{max:5,delta:true})+'</div></div>'
+  +'<div class="spread"><button class="btn btn--ghost" data-act="quit">End game</button>'
+  +'<button class="btn btn--primary btn--big" data-act="hnext">'+(last?'Final scores':'Next question')+'</button></div>'
+  +'</div>';
+};
+
+V.hostF=function(){
+  var list=sorted(S.players);
+  return '<div class="pane pane--wide">'
+  +'<div class="stack stack--tight"><p class="eyebrow">Край на играта</p><h1>Final scores</h1></div>'
+  +podium(list)+shev()
+  +'<div class="card"><h3>Everyone</h3>'+leaderboard(list,{max:50})+'</div>'
+  +'<div class="btnrow btnrow--end"><button class="btn btn--primary" data-act="quit">Back to the start</button></div>'
+  +'</div>';
+};
+
+/* ---------------- live player screens ---------------- */
+V.pLobby=function(){
+  return '<div class="pane pane--play">'
+  +'<div class="verdict"><p class="eyebrow">You are in</p><h2>'+esc(S.me.name)+'</h2>'
+  +'<p class="small">'+(LAN?'':'Game '+esc(S.pin)+' · ')+S.players.length+' player'+(S.players.length===1?'':'s')+' waiting</p></div>'
+  +'<p class="lede" style="text-align:center;margin:0 auto">Watch the big screen. When a question appears, your three answer buttons show up here — fastest correct answer scores the most.</p>'
+  +shev()
+  +'<div class="btnrow btnrow--end"><button class="btn btn--ghost btn--sm" data-act="quit">Leave</button></div>'
+  +'</div>';
+};
+
+V.pQ=function(){
+  var q=qOf(S.deck[S.game.qIndex]);
+  var bar='<div class="playerbar"><b>'+esc(S.me.name)+'</b><span class="sc">'+fmt(S.me.score)+'</span></div>';
+  if(S.pick!==null){
+    return '<div class="pane pane--play">'
+    +'<div class="verdict"><p class="eyebrow">Locked in</p><h2>'+S.pickLabel+'</h2>'
+    +'<p class="small">Waiting for the room…</p></div>'+bar+'</div>';
+  }
+  if(q.multi){
+    return '<div class="pane pane--play">'+timerBar()
+    +'<p class="qtext qtext--sm">'+q.t+'</p>'
+    +optionList(q,{player:true,act:'msel',multiSel:S.mpick})
+    +'<button class="btn btn--primary btn--big" data-act="mlock" '+(S.mpick.length?'':'disabled')+'>'
+    +(S.mpick.length?'Lock in '+S.mpick.length+' answer'+(S.mpick.length===1?'':'s'):'Pick every one that applies')+'</button>'
+    +bar+'</div>';
+  }
+  return '<div class="pane pane--play">'
+  +timerBar()
+  +'<p class="qtext qtext--sm">'+q.t+'</p>'
+  +optionList(q,{player:true,act:'ans'})
+  +bar+'</div>';
+};
+
+V.pWait=function(){
+  return '<div class="pane pane--play"><div class="verdict"><p class="eyebrow">Time</p><h2>No answer this round</h2>'
+  +'<p class="small">Watch the screen for the answer.</p></div>'
+  +'<div class="playerbar"><b>'+esc(S.me.name)+'</b><span class="sc">'+fmt(S.me.score)+'</span></div></div>';
+};
+
+V.pR=function(){
+  var q=qOf(S.deck[S.game.qIndex]), list=sorted(S.players), rank=1;
+  list.forEach(function(p,i){ if(p.id===MYID) rank=i+1; });
+  var answered=S.pick!==null;
+  return '<div class="pane pane--play">'
+  +'<div class="verdict '+(answered?(S.lastRight?'is-right':'is-wrong'):'')+'">'
+  +'<p class="eyebrow">'+(answered?(S.lastRight?'Correct':'Not this time'):'No answer')+'</p>'
+  +'<h2>'+(Array.isArray(q.c)?q.c.map(function(k){ return LETTER[k]; }).join(', ')+' — '+esc(q.c.map(function(k){ return q.a[k]; }).join(', ')):GLYPH[q.c]+' '+LETTER[q.c]+' — '+esc(q.a[q.c]))+'</h2>'
+  +(answered&&S.lastRight?'<span class="gain">+'+fmt(S.gain)+'</span>':'')
+  +'<p class="small">'+fmt(S.me.score)+' points · '+rank+ordinal(rank)+' of '+list.length+(S.me.streak>1?' · '+S.me.streak+' in a row':'')+'</p></div>'
+  +leaderboard(list,{max:5,meId:MYID})
+  +'<div class="playerbar"><b>'+esc(S.me.name)+'</b><span class="sc">'+fmt(S.me.score)+'</span></div></div>';
+};
+
+V.pF=function(){
+  var list=sorted(S.players), rank=1;
+  list.forEach(function(p,i){ if(p.id===MYID) rank=i+1; });
+  return '<div class="pane pane--play">'
+  +'<div class="verdict is-right"><p class="eyebrow">Final</p><h2>'+rank+ordinal(rank)+' place</h2>'
+  +'<span class="gain">'+fmt(S.me.score)+'</span><p class="small">out of '+list.length+' players</p></div>'
+  +leaderboard(list,{max:10,meId:MYID})
+  +'<div class="btnrow btnrow--end"><button class="btn btn--ghost btn--sm" data-act="quit">Done</button></div></div>';
+};
+function ordinal(n){ var s=['th','st','nd','rd'], v=n%100; return s[(v-20)%10]||s[v]||s[0]; }
+
+/* ---------------- stage mode ---------------- */
+V.stageQ=function(){
+  var id=S.deck[S.i], q=qOf(id);
+  return '<div class="pane pane--wide pane--play">'
+  +headerFor(id,S.i,S.deck.length)+timerBar()
+  +'<p class="qtext">'+q.t+'</p>'
+  +optionList(q,{static:true})
+  +'<div class="spread"><button class="btn btn--ghost btn--sm" data-act="quit">End</button>'
+  +'<button class="btn btn--gold btn--big" data-act="sreveal">Reveal the answer</button></div></div>';
+};
+
+V.stageR=function(){
+  var id=S.deck[S.i], q=qOf(id);
+  return '<div class="pane pane--wide pane--play">'
+  +headerFor(id,S.i,S.deck.length)
+  +'<p class="qtext qtext--sm">'+q.t+'</p>'
+  +optionList(q,{static:true,reveal:true})
+  +'<div class="why"><b>'+answerLine(q)+'</b> '+q.why+'</div>'
+  +'<div class="spread"><button class="btn btn--ghost btn--sm" data-act="quit">End</button>'
+  +'<button class="btn btn--primary btn--big" data-act="saward">Who got it right?</button></div></div>';
+};
+
+V.stageA=function(){
+  var last=S.i>=S.deck.length-1, n=Object.keys(S.marks).length;
+  return '<div class="pane pane--wide">'
+  +'<div class="stack stack--tight"><p class="eyebrow">Question '+(S.i+1)+' of '+S.deck.length+'</p>'
+  +'<h2>Tap everyone who got it right</h2></div>'
+  +'<div class="awards">'+sorted(S.roster).map(function(p){
+      return '<button class="award'+(S.marks[p.id]?' is-on':'')+'" data-act="mark" data-id="'+p.id+'"><span>'+esc(p.name)+'</span><span class="s">'+fmt(p.score)+'</span></button>';
+    }).join('')+'</div>'
+  +'<div class="spread"><span class="pill"><b>'+n+'</b> marked correct · +1,000 each</span>'
+  +'<div class="btnrow"><button class="btn btn--ghost" data-act="sback">Back to the answer</button>'
+  +'<button class="btn btn--primary btn--big" data-act="snext">'+(last?'Final scores':'Next question')+'</button></div></div>'
+  +'</div>';
+};
+
+V.stageF=function(){
+  var list=sorted(S.roster);
+  return '<div class="pane pane--wide">'
+  +'<div class="stack stack--tight"><p class="eyebrow">Край на играта</p><h1>Final scores</h1></div>'
+  +podium(list)+shev()
+  +'<div class="card"><h3>Everyone</h3>'+leaderboard(list,{max:50})+'</div>'
+  +'<div class="btnrow btnrow--end"><button class="btn btn--primary" data-act="quit">Back to the start</button></div></div>';
+};
+
+/* ---------------- solo ---------------- */
+V.soloQ=function(){
+  var id=S.deck[S.i], q=qOf(id);
+  if(S.pick===null){
+    return '<div class="pane pane--play">'
+    +headerFor(id,S.i,S.deck.length)+timerBar()
+    +'<p class="qtext qtext--sm">'+q.t+'</p>'
+    +optionList(q,{player:true,act:q.multi?'msel':'soloans',multiSel:q.multi?S.mpick:null})
+    +(q.multi?'<button class="btn btn--primary btn--big" data-act="mlock" '+(S.mpick.length?'':'disabled')+'>'+(S.mpick.length?'Lock in '+S.mpick.length+' answer'+(S.mpick.length===1?'':'s'):'Pick every one that applies')+'</button>':'')
+    +'<div class="playerbar"><b>Practice run</b><span class="sc">'+fmt(S.soloScore)+'</span></div></div>';
+  }
+  var last=S.i>=S.deck.length-1;
+  return '<div class="pane pane--play">'
+  +headerFor(id,S.i,S.deck.length)
+  +'<p class="qtext qtext--sm">'+q.t+'</p>'
+  +optionList(q,{static:true,reveal:true,picked:S.pick,multiSel:Array.isArray(S.pick)?S.pick:null})
+  +'<div class="why"><b>'+(S.lastRight?'Correct — +'+fmt(S.gain)+'.':answerLine(q))+'</b> '+q.why+'</div>'
+  +'<div class="spread"><span class="pill">Score <b>'+fmt(S.soloScore)+'</b></span>'
+  +'<button class="btn btn--primary btn--big" data-act="solonext">'+(last?'See the result':'Next question')+'</button></div></div>';
+};
+
+V.soloF=function(){
+  var right=S.soloLog.filter(function(x){return x.ok;}).length;
+  var missed=S.soloLog.filter(function(x){return !x.ok;});
+  return '<div class="pane">'
+  +'<div class="stack stack--tight"><p class="eyebrow">Practice run</p><h1>'+right+' of '+S.soloLog.length+' correct</h1>'
+  +'<p class="lede">'+fmt(S.soloScore)+' points. A perfect, instant run is worth '+fmt(S.soloLog.length*1000)+'.</p></div>'
+  +(missed.length?'<div class="card"><h3>Worth reading out twice</h3><div class="stack">'
+    +missed.map(function(x){ var q=qOf(x.id); return '<div class="why"><b>'+esc(rOf(x.id).city)+' — '+LETTER[q.c]+'.</b> '+q.t+'</div>'; }).join('')
+    +'</div></div>':'<div class="notice notice--ok">A clean sheet. You are ready to host.</div>')
+  +'<div class="btnrow btnrow--end"><button class="btn btn--primary" data-act="quit">Back to the start</button></div></div>';
+};
+
+/* ---------------- shevitsa ---------------- */
+var MOTIF=["....X....","...X.X...","..X...X..",".X..X..X.","X..XXX..X",".X..X..X.","..X...X..","...X.X...","....X...."];
+function drawShev(cv){
+  var w=cv.clientWidth||window.innerWidth, h=30, dpr=Math.min(2,window.devicePixelRatio||1);
+  if(!w) return;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  var g=cv.getContext('2d'); if(!g) return;
+  g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  var cell=3, size=27, step=size+6, y=(h-size)/2, cols=Math.ceil(w/step)+1;
+  for(var c=0;c<cols;c++){
+    g.fillStyle=(c%2)?'#D4A03C':'#CE3B33';
+    g.globalAlpha=0.85;
+    for(var r=0;r<9;r++) for(var q=0;q<9;q++) if(MOTIF[r].charAt(q)==='X') g.fillRect(c*step+q*cell,y+r*cell,cell-0.6,cell-0.6);
+  }
+}
+var rzT=null;
+window.addEventListener('resize',function(){ clearTimeout(rzT); rzT=setTimeout(function(){ Array.prototype.forEach.call(document.querySelectorAll('canvas.shev'),drawShev); },150); });
+
+/* ---------------- paint ---------------- */
+function paint(){
+  var v=V[S.screen]||V.home;
+  app.innerHTML=v();
+  Array.prototype.forEach.call(document.querySelectorAll('canvas.shev'),drawShev);
+  var f=document.getElementById('rname')||document.getElementById('jpin');
+  if(f && !f.value) { try{ f.focus({preventScroll:true}); }catch(e){} }
+}
+
+/* ---------------- live room plumbing ---------------- */
+function pushGame(patch){
+  for(var k in patch) S.game[k]=patch[k];
+  S.game.rev=(S.game.rev||0)+1;
+  if(DB && S.pin) return DB.doc('games/'+S.pin).set(S.game).catch(function(){});
+  return Promise.resolve();
+}
+function subPlayers(pin){
+  if(S.unsubB){ S.unsubB(); S.unsubB=null; }
+  S.unsubB=DB.collection('games/'+pin+'/players').onSnapshot(function(sn){
+    S.players=sn.docs.map(function(d){ var o=d.data()||{}; return {id:d.id,name:o.name||'—',score:o.score||0,streak:o.streak||0,answers:o.answers||{}}; });
+    if(/^(hostLobby|hostQ|hostR|hostF|pLobby|pR|pF)$/.test(S.screen)) paint();
+    if(S.screen==='hostQ'){
+      var a=answersFor(S.i);
+      if(S.players.length && a.n>=S.players.length) setTimeout(function(){ if(S.screen==='hostQ') ACTS.hreveal(); },800);
+    }
+  },function(){});
+}
+function subGame(pin){
+  if(S.unsubA){ S.unsubA(); S.unsubA=null; }
+  S.unsubA=DB.doc('games/'+pin).onSnapshot(function(sn){
+    var g=sn.exists?sn.data():null; if(!g||!g.deck) return;
+    S.game=g; S.deck=g.deck; S.qDur=g.limit||30;
+    if(g.status==='lobby'){ clearTimer(); if(S.screen!=='pLobby'){ S.screen='pLobby'; paint(); } }
+    else if(g.status==='question'){
+      if(S.pQ!==g.qIndex){
+        S.pQ=g.qIndex; S.pick=null; S.gain=0; S.lastRight=false; S.mpick=[]; S.pickLabel='';
+        var el=Date.now()-(g.qStartAt||0);
+        var rem=(el>=0 && el<g.limit*1000) ? (g.limit-el/1000) : g.limit;
+        S.deadline=Date.now()+rem*1000; S.screen='pQ';
+        armTimer(rem,function(){ if(S.pick!==null) return; if(S.mpick.length){ ACTS.mlock(); return; } S.screen='pWait'; paint(); });
+        paint();
+      }
+    }
+    else if(g.status==='reveal'){ clearTimer(); S.screen='pR'; paint(); }
+    else { clearTimer(); S.screen='pF'; lsDel('session'); paint(); }
+  },function(){});
+}
+function claimPin(deck){
+  var tries=0;
+  function attempt(){
+    if(++tries>10) return Promise.reject(new Error('every PIN was busy — try again'));
+    var pin=String(Math.floor(1000+Math.random()*9000)), ref=DB.doc('games/'+pin);
+    return ref.acquire({holder:MYID,ttlMs:6000}).then(function(res){
+      if(!res.acquired) return attempt();
+      return ref.get().then(function(sn){
+        var d=sn.exists?sn.data():null;
+        if(d && d.deck && d.status && d.status!=='ended' && d.status!=='final' && (Date.now()-(d.createdAt||0)<8*3600*1000)) return attempt();
+        S.game={pin:pin,host:MYID,createdAt:Date.now(),status:'lobby',qIndex:-1,qStartAt:0,limit:S.limit,deck:deck,rev:1};
+        return ref.set(S.game).then(function(){ return pin; });
+      });
+    });
+  }
+  return attempt();
+}
+function pruneOld(){
+  if(!DB) return;
+  try{
+    DB.collection('games').where('createdAt','<',Date.now()-24*3600*1000).limit(6).get().then(function(sn){
+      sn.docs.forEach(function(d){
+        DB.collection('games/'+d.id+'/players').limit(300).get().then(function(ps){
+          ps.docs.forEach(function(p){ DB.doc('games/'+d.id+'/players/'+p.id).delete().catch(function(){}); });
+        }).catch(function(){});
+        DB.doc('games/'+d.id).delete().catch(function(){});
+      });
+    }).catch(function(){});
+  }catch(e){}
+}
+function saveStage(){ ls('stage',{deck:S.deck,i:S.i,limit:S.limit,roster:S.roster}); }
+
+/* ---------------- actions ---------------- */
+var ACTS={};
+ACTS.go=function(t){
+  var to=t.getAttribute('data-to'); S.err=null;
+  if(to==='setup-live'){ S.mode='live'; S.screen='setup'; }
+  else if(to==='setup-stage'){ S.mode='stage'; S.screen='setup'; }
+  else if(to==='setup-solo'){ S.mode='solo'; S.screen='setup'; }
+  else if(to==='roster'){ S.deck=buildDeck(); S.screen='roster'; }
+  else if(to==='join' && LAN){ S.screen='lanjoin'; }
+  else S.screen=to;
+  paint();
+};
+ACTS.selall=function(){ ROUNDS.forEach(function(r){ S.sel[r.id]=true; }); paint(); };
+ACTS.selnone=function(){ ROUNDS.forEach(function(r){ S.sel[r.id]=false; }); paint(); };
+ACTS.selmain=function(){ ROUNDS.forEach(function(r){ S.sel[r.id]=!!r.main; }); paint(); };
+ACTS.selcity=function(){ ROUNDS.forEach(function(r){ S.sel[r.id]=!r.main; }); paint(); };
+ACTS.togr=function(t){ var id=t.getAttribute('data-id'); S.sel[id]=!S.sel[id]; paint(); };
+ACTS.limit=function(t){ S.limit=+t.getAttribute('data-n'); paint(); };
+ACTS.shuf=function(t){ S.shuffle=t.getAttribute('data-v')==='1'; paint(); };
+
+ACTS.openroom=function(){
+  if(LAN){ S.deck=buildDeck(); lanCmd('open',{deck:S.deck,limit:S.limit}); return; }
+  if(!DB){ S.err='No shared connection in this view.'; return paint(); }
+  S.busy=true; S.err=null; paint();
+  var deck=buildDeck();
+  claimPin(deck).then(function(pin){
+    S.pin=pin; S.deck=deck; S.i=0; S.players=[]; S.busy=false; S.screen='hostLobby';
+    subPlayers(pin); paint(); pruneOld();
+  }).catch(function(e){ S.busy=false; S.err='Could not open a room: '+((e&&e.message)||e); paint(); });
+};
+ACTS.hstart=function(){
+  if(LAN){ lanCmd('start'); return; }
+  S.i=0; S.screen='hostQ';
+  pushGame({status:'question',qIndex:0,qStartAt:Date.now(),limit:S.limit});
+  armTimer(S.limit,ACTS.hreveal); paint();
+};
+ACTS.hreveal=function(){ if(LAN){ lanCmd('reveal'); return; } clearTimer(); S.screen='hostR'; pushGame({status:'reveal'}); paint(); };
+ACTS.hnext=function(){
+  if(LAN){ lanCmd('next'); return; }
+  if(S.i>=S.deck.length-1){ S.screen='hostF'; pushGame({status:'final'}); paint(); return; }
+  S.i++; S.screen='hostQ';
+  pushGame({status:'question',qIndex:S.i,qStartAt:Date.now()});
+  armTimer(S.limit,ACTS.hreveal); paint();
+};
+
+ACTS.dojoin=function(){
+  var pe=document.getElementById('jpin'), ne=document.getElementById('jname');
+  var pin=((pe&&pe.value)||'').replace(/\D/g,''), name=((ne&&ne.value)||'').trim().slice(0,18);
+  S.pinTry=pin; S.nameTry=name;
+  if(pin.length!==4){ S.err='The PIN is four digits.'; return paint(); }
+  if(!name){ S.err='Add a name, so the scoreboard knows who you are.'; return paint(); }
+  if(!DB){ S.err='No shared connection in this view.'; return paint(); }
+  S.busy=true; S.err=null; paint();
+  DB.doc('games/'+pin).get().then(function(sn){
+    var g=sn.exists?sn.data():null;
+    if(!g||!g.deck) throw new Error('No game found with PIN '+pin+'.');
+    if(g.status==='final'||g.status==='ended') throw new Error('That game has already finished.');
+    S.pin=pin; S.game=g; S.deck=g.deck; S.mode='player'; S.qDur=g.limit||30;
+    var ref=DB.doc('games/'+pin+'/players/'+MYID);
+    return ref.get().then(function(ps){
+      var prev=ps.exists?ps.data():null;
+      S.me={id:MYID,name:name,score:(prev&&prev.score)||0,streak:(prev&&prev.streak)||0,answers:(prev&&prev.answers)||{}};
+      return ref.set({name:name,score:S.me.score,streak:S.me.streak,answers:S.me.answers,joinedAt:Date.now()});
+    });
+  }).then(function(){
+    ls('session',{pin:S.pin,name:S.me.name});
+    S.busy=false; S.screen='pLobby'; S.pQ=-1;
+    subPlayers(S.pin); subGame(S.pin); paint();
+  }).catch(function(e){ S.busy=false; S.err=(e&&e.message)||'Could not join that game.'; paint(); });
+};
+ACTS.lanjoin=function(){
+  var el=document.getElementById('lname');
+  var n=((el&&el.value)||'').trim().slice(0,18);
+  S.nameTry=n;
+  if(!n){ S.err='Add a name, so the scoreboard knows who you are.'; return paint(); }
+  S.busy=true; S.err=null; paint();
+  api('/join',{name:n,id:ls('lanid')||null}).then(function(r){
+    S.busy=false;
+    if(!r||!r.ok){ S.err=(r&&r.error)||'Could not join the game.'; return paint(); }
+    LANID=r.id; ls('lanid',r.id);
+    S.me={id:r.id,name:n,score:r.score||0,streak:r.streak||0,answers:r.answers||{}};
+    S.screen='pLobby'; paint();
+  }).catch(function(){ S.busy=false; S.err='Lost the connection to the game.'; paint(); });
+};
+ACTS.rejoin=function(){ var s=ls('session'); if(!s) return; S.pinTry=s.pin; S.nameTry=s.name; S.screen='join'; S.err=null; paint(); ACTS.dojoin(); };
+ACTS.forget=function(){ lsDel('session'); paint(); };
+ACTS.ans=function(t){
+  if(S.pick!==null||!S.game) return;
+  var k=+t.getAttribute('data-i'), q=qOf(S.deck[S.game.qIndex]);
+  if(!q) return;
+  if(LAN){ S.pick=k; S.pickLabel=GLYPH[k]+' '+LETTER[k]; clearTimer(); paint(); lanAnswer(k); return; }
+  var right=(k===q.c);
+  var frac=Math.max(0,Math.min(1,(S.deadline-Date.now())/(S.qDur*1000)));
+  var base=right?Math.round(500+500*frac):0;
+  var bonus=right?Math.min(500,100*(S.me.streak||0)):0;
+  S.pick=k; S.lastRight=right; S.gain=base+bonus; S.pickLabel=GLYPH[k]+' '+LETTER[k];
+  S.me.streak=right?(S.me.streak||0)+1:0;
+  S.me.score=(S.me.score||0)+S.gain;
+  var key=String(S.game.qIndex), upd={}; upd[key]={k:k,ok:right?1:0,p:S.gain};
+  S.me.answers[key]=upd[key];
+  clearTimer(); paint();
+  DB.doc('games/'+S.pin+'/players/'+MYID).update({score:S.me.score,streak:S.me.streak,answers:upd}).catch(function(){});
+};
+
+ACTS.msel=function(t){
+  if(S.pick!==null) return;
+  var k=+t.getAttribute('data-i'), at=S.mpick.indexOf(k);
+  if(at>=0) S.mpick.splice(at,1); else S.mpick.push(k);
+  paint();
+};
+ACTS.mlock=function(){
+  if(S.pick!==null || !S.mpick.length) return;
+  var solo=(S.screen==='soloQ');
+  var q=qOf(S.deck[solo?S.i:S.game.qIndex]); if(!q) return;
+  var picksNow=S.mpick.slice().sort(function(a,b){ return a-b; });
+  if(!solo && LAN){
+    S.pick=picksNow; S.pickLabel=picksNow.map(function(k){ return GLYPH[k]+' '+LETTER[k]; }).join('   ');
+    clearTimer(); paint(); lanAnswer(picksNow); return;
+  }
+  var right=sameSet(S.mpick,q.c);
+  var frac=Math.max(0,Math.min(1,(S.deadline-Date.now())/(S.qDur*1000)));
+  var streak=(S.me&&S.me.streak)||0;
+  var gain=right?Math.round(500+500*frac)+Math.min(500,100*streak):0;
+  var picks=S.mpick.slice().sort(function(a,b){ return a-b; });
+  S.pick=picks; S.lastRight=right; S.gain=gain;
+  S.pickLabel=picks.map(function(k){ return GLYPH[k]+' '+LETTER[k]; }).join('   ');
+  if(S.me) S.me.streak=right?streak+1:0;
+  clearTimer();
+  if(solo){ S.soloScore+=gain; S.soloLog.push({id:S.deck[S.i],ok:right}); paint(); return; }
+  S.me.score=(S.me.score||0)+gain;
+  var key=String(S.game.qIndex), upd={}; upd[key]={k:picks,ok:right?1:0,p:gain};
+  S.me.answers[key]=upd[key];
+  paint();
+  DB.doc('games/'+S.pin+'/players/'+MYID).update({score:S.me.score,streak:S.me.streak,answers:upd}).catch(function(){});
+};
+ACTS.addr=function(){
+  var el=document.getElementById('rname'); if(!el) return;
+  var n=(el.value||'').trim().slice(0,24); if(!n) return;
+  S.roster.push({id:'t'+rid(),name:n,score:0}); el.value=''; paint();
+};
+ACTS.delr=function(t){ var id=t.getAttribute('data-id'); S.roster=S.roster.filter(function(p){ return p.id!==id; }); paint(); };
+ACTS.startstage=function(){
+  S.i=0; S.marks={}; S.screen='stageQ'; S.roster.forEach(function(p){ p.score=0; });
+  saveStage(); armTimer(S.limit,null); paint();
+};
+ACTS.resumestage=function(){
+  var g=ls('stage'); if(!g) return;
+  S.mode='stage'; S.deck=g.deck; S.i=g.i; S.limit=g.limit||30; S.roster=g.roster||[]; S.marks={};
+  S.screen='stageQ'; armTimer(S.limit,null); paint();
+};
+ACTS.dropstage=function(){ lsDel('stage'); paint(); };
+ACTS.sreveal=function(){ clearTimer(); S.screen='stageR'; paint(); };
+ACTS.saward=function(){ S.marks={}; S.screen='stageA'; paint(); };
+ACTS.sback=function(){ S.screen='stageR'; paint(); };
+ACTS.mark=function(t){ var id=t.getAttribute('data-id'); if(S.marks[id]) delete S.marks[id]; else S.marks[id]=1; paint(); };
+ACTS.snext=function(){
+  S.roster.forEach(function(p){ if(S.marks[p.id]) p.score=(p.score||0)+1000; });
+  S.marks={};
+  if(S.i>=S.deck.length-1){ S.screen='stageF'; lsDel('stage'); paint(); return; }
+  S.i++; S.screen='stageQ'; saveStage(); armTimer(S.limit,null); paint();
+};
+
+function soloTimeout(){
+  if(S.pick!==null) return;
+  if(S.mpick.length){ ACTS.mlock(); return; }
+  S.pick=-1; S.lastRight=false; S.gain=0; S.soloLog.push({id:S.deck[S.i],ok:false}); paint();
+}
+ACTS.startsolo=function(){
+  S.deck=buildDeck(); S.i=0; S.pick=null; S.mpick=[]; S.pickLabel=''; S.soloScore=0; S.soloLog=[]; S.me={streak:0};
+  S.screen='soloQ'; S.deadline=Date.now()+S.limit*1000; S.qDur=S.limit;
+  armTimer(S.limit,soloTimeout);
+  paint();
+};
+ACTS.soloans=function(t){
+  if(S.pick!==null) return;
+  var k=+t.getAttribute('data-i'), q=qOf(S.deck[S.i]), right=(k===q.c);
+  var frac=Math.max(0,Math.min(1,(S.deadline-Date.now())/(S.qDur*1000)));
+  var bonus=right?Math.min(500,100*(S.me.streak||0)):0;
+  S.pick=k; S.lastRight=right; S.gain=right?Math.round(500+500*frac)+bonus:0;
+  S.me.streak=right?(S.me.streak||0)+1:0;
+  S.soloScore+=S.gain; S.soloLog.push({id:S.deck[S.i],ok:right});
+  clearTimer(); paint();
+};
+ACTS.solonext=function(){
+  if(S.i>=S.deck.length-1){ S.screen='soloF'; paint(); return; }
+  S.i++; S.pick=null; S.mpick=[]; S.pickLabel=''; S.deadline=Date.now()+S.limit*1000;
+  armTimer(S.limit,soloTimeout);
+  paint();
+};
+
+ACTS.quit=function(){
+  if(LAN && LAN.role==='host'){ lanCmd('reset'); clearTimer(); S.qShown=-1; S.screen='setup'; return paint(); }
+  if(LAN){ S.screen='lanjoin'; S.me=null; clearTimer(); return paint(); }
+  if(S.mode==='live' && S.game && DB && S.pin){ try{ pushGame({status:'ended'}); }catch(e){} }
+  if(S.unsubA){ S.unsubA(); S.unsubA=null; }
+  if(S.unsubB){ S.unsubB(); S.unsubB=null; }
+  clearTimer();
+  S.pin=null; S.game=null; S.players=[]; S.me=null; S.pick=null; S.mpick=[]; S.pickLabel=''; S.pQ=-1; S.mode=null; S.err=null; S.i=0;
+  S.screen='home'; paint();
+};
+
+/* ---------------- events + boot ---------------- */
+app.addEventListener('click',function(e){
+  var t=e.target.closest?e.target.closest('[data-act]'):null;
+  if(!t||t.disabled) return;
+  var fn=ACTS[t.getAttribute('data-act')];
+  if(fn){ e.preventDefault(); fn(t,e); }
+});
+app.addEventListener('keydown',function(e){
+  if(e.key!=='Enter') return;
+  var id=e.target&&e.target.id;
+  if(id==='rname'){ e.preventDefault(); ACTS.addr(); }
+  else if(id==='lname'){ e.preventDefault(); ACTS.lanjoin(); }
+  else if(id==='jpin'||id==='jname'){ e.preventDefault(); ACTS.dojoin(); }
+});
+if(LAN){
+  lanConnect();
+  if(LAN.role==='host'){ S.mode='live'; S.screen='setup'; }
+  else { S.screen='lanjoin'; }
+}
+paint();
+})();
+</script>
